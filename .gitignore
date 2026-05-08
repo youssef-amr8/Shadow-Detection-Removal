@@ -32,11 +32,15 @@ __pycache__/
 *.pyd
 
 # =========================
-# Virtual environments
+# Virtual environments (DO NOT UPLOAD - these are huge!)
 # =========================
 venv/
 env/
 .env/
+deepproject/
+mlproject/
+mlproject_py310/
+Conda\ deepproject/
 
 # =========================
 # OS files
@@ -48,3 +52,10 @@ Thumbs.db
 # Logs
 # =========================
 *.log
+
+# =========================
+# VS Code (keep settings.json, ignore personal files)
+# =========================
+.vscode/.ropeproject
+.vscode/.history
+.vscode/*.code-workspace
