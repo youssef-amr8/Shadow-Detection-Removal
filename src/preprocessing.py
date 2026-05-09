@@ -1,40 +1,36 @@
 import os
-import cv2
 import numpy as np
-
-IMG_SIZE = 256
-
-
-def load_image(path):
-    img = cv2.imread(path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    img = img / 255.0
-    return img.astype(np.float32)
+from PIL import Image
+import torch
+from torch.utils.data import Dataset
 
 
-def load_mask(path):
-    mask = cv2.imread(path, 0)
-    mask = cv2.resize(mask, (IMG_SIZE, IMG_SIZE))
-    mask = mask / 255.0
-    mask = np.expand_dims(mask, axis=-1)
-    return mask.astype(np.float32)
+class ShadowDataset(Dataset):
+    def __init__(self, base_path, img_size=256):
 
+        self.A_path = os.path.join(base_path, "train", "train_A")
+        self.B_path = os.path.join(base_path, "train", "train_B")
 
-def load_dataset(base_path):
-    A_path = os.path.join(base_path, "train_A")
-    B_path = os.path.join(base_path, "train_B")
+        self.files = sorted(os.listdir(self.A_path))
+        self.img_size = img_size
 
-    X, y = [], []
+    def __len__(self):
+        return len(self.files)
 
-    files = sorted(os.listdir(A_path))
+    def __getitem__(self, idx):
 
-    for f in files:
-        img_path = os.path.join(A_path, f)
-        mask_path = os.path.join(B_path, f)
+        file = self.files[idx]
 
-        if os.path.exists(mask_path):
-            X.append(load_image(img_path))
-            y.append(load_mask(mask_path))
+        img_path = os.path.join(self.A_path, file)
+        mask_path = os.path.join(self.B_path, file)
 
-    return np.array(X), np.array(y)
+        image = Image.open(img_path).convert("RGB").resize((self.img_size, self.img_size))
+        mask = Image.open(mask_path).convert("L").resize((self.img_size, self.img_size))
+
+        image = np.array(image, dtype=np.float32) / 255.0
+        mask = np.array(mask, dtype=np.float32) / 255.0
+
+        image = torch.tensor(image).permute(2, 0, 1)
+        mask = torch.tensor(mask).unsqueeze(0)
+
+        return image, mask

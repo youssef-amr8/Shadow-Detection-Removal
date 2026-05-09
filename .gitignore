@@ -1,38 +1,53 @@
 # =========================
-# Dataset (VERY IMPORTANT - DO NOT PUSH 2GB FILES)
+# DATASET (VERY IMPORTANT - DO NOT PUSH 2GB FILES)
 # =========================
 data/
 ISTD_Dataset/
+*.jpg
+*.png
+*.jpeg
+*.tif
+*.bmp
 
 # =========================
-# Trained models
+# TRAINED MODELS (PyTorch)
 # =========================
 *.h5
 *.keras
+*.pth
+*.pt
+*.pkl
+*.joblib
 models/
+checkpoints/
+*.ckpt
 
 # =========================
-# Outputs / results
+# OUTPUTS / RESULTS
 # =========================
 outputs/
 results/
 predictions/
+*.log
 
 # =========================
-# Jupyter Notebook checkpoints
+# JUPYTER NOTEBOOK CHECKPOINTS
 # =========================
 .ipynb_checkpoints/
+*.ipynb
 
 # =========================
-# Python cache
+# PYTHON CACHE
 # =========================
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.so
+*.dll
 
 # =========================
-# Virtual environments (DO NOT UPLOAD - these are huge!)
+# VIRTUAL ENVIRONMENTS (DO NOT UPLOAD - these are huge!)
 # =========================
 venv/
 env/
@@ -40,22 +55,73 @@ env/
 deepproject/
 mlproject/
 mlproject_py310/
+pytorch_env/
+wsl_env/
 Conda\ deepproject/
 
 # =========================
-# OS files
+# OS FILES
 # =========================
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # =========================
-# Logs
-# =========================
-*.log
-
-# =========================
-# VS Code (keep settings.json, ignore personal files)
+# VS CODE (keep settings.json, ignore personal files)
 # =========================
 .vscode/.ropeproject
 .vscode/.history
 .vscode/*.code-workspace
+.vscode/settings.json
+
+# =========================
+# PYCHARM
+# =========================
+.idea/
+*.iml
+
+# =========================
+# TENSORFLOW SPECIFIC (no longer needed but keep for safety)
+# =========================
+*.hdf5
+*.pb
+saved_model/
+
+# =========================
+# PYTORCH SPECIFIC
+# =========================
+*.pth
+*.pt
+*.onnx
+*.t7
+
+# =========================
+# TEMPORARY FILES
+# =========================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# =========================
+# WSL RELATED
+# =========================
+/mnt/c/
+/mnt/d/
+
+# =========================
+# DOCKER (if you use it)
+# =========================
+Dockerfile
+*.dockerfile
+docker-compose*.yml
+.docker/
+
+# =========================
+# TEST COVERAGE
+# =========================
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
