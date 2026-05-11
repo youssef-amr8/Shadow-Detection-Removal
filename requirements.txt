@@ -1,3 +1,4 @@
+# TensorFlow: use Python 3.10–3.13 (3.14 not supported yet). See tensorflow.org/install/pip
 numpy
 matplotlib
 opencv-python
