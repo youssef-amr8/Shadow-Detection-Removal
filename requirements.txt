@@ -1,9 +1,6 @@
-# TensorFlow: use Python 3.10–3.13 (3.14 not supported yet). See tensorflow.org/install/pip
+# Core deps (no torch here — install script installs PyTorch separately to avoid
+# huge CUDA wheels and /tmp issues on WSL). GPU: see README.
 numpy
-matplotlib
 opencv-python
-scikit-image
+Pillow
 tqdm
-tensorflow
-scikit-learn
-jupyter

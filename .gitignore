@@ -1,5 +1,5 @@
 # =========================
-# Dataset (VERY IMPORTANT - DO NOT PUSH 2GB FILES)
+# Dataset 
 # =========================
 data/
 ISTD_Dataset/
@@ -12,6 +12,8 @@ ISTD_Dataset/
 # =========================
 # TRAINED MODELS (PyTorch)
 # =========================
+shadow_detection.pth
+models/shadow_detection.pth
 *.h5
 *.keras
 *.pth
@@ -47,8 +49,9 @@ __pycache__/
 *.dll
 
 # =========================
-# VIRTUAL ENVIRONMENTS (DO NOT UPLOAD - these are huge!)
+# VIRTUAL ENVIRONMENTS 
 # =========================
+.venv/
 venv/
 env/
 .env/
