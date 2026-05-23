@@ -13,14 +13,7 @@ from utils import load_torch_checkpoint, repo_root
 
 
 def resolve_detection_weights_path(weights_path: str | Path | None) -> Path:
-    """
-    Single-file PyTorch checkpoints only (``.pth`` / ``.pt``).
 
-    Tries, in order: explicit path, ``models/shadow_detection.pth``, repo-root
-    ``shadow_detection.pth``. A directory named ``shadow_detection/`` with only
-    ``version`` / ``byteorder`` is **not** a loadable checkpoint (often a partial
-    unzip of a ``.pth`` zip); use the original one-file save from training.
-    """
     root = repo_root()
     if weights_path is not None:
         p = Path(weights_path)
