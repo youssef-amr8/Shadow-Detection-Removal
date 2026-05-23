@@ -128,3 +128,5 @@ docker-compose*.yml
 htmlcov/
 .tox/
 .pytest_cache/
+
+myReadme.md

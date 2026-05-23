@@ -9,7 +9,7 @@ import numpy as np
 import torch
 
 from shadow_detector import ShadowDetector, resolve_detection_weights_path
-from shadow_removal_cv import remove_shadows_lab
+from shadow_removal_cv import apply_shadow_removal
 
 
 def remove_shadows(
@@ -19,10 +19,12 @@ def remove_shadows(
     detection_weights: str | Path | None = None,
     device: str | torch.device | None = None,
     save_mask_path: str | Path | None = None,
+    cv_method: str = "lab-pro",
+    cv_kwargs: dict | None = None,
     verbose: bool = False,
 ) -> np.ndarray:
     """
-    Load image → detector mask → LAB-based shadow reduction → optional saves.
+    Load image → detector mask → CV shadow reduction → optional saves.
 
     Returns:
         RGB float32 (H, W, 3) in [0, 1].
@@ -41,9 +43,12 @@ def remove_shadows(
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
 
     if verbose:
-        print("[3/4] Running U-Net → shadow mask, then LAB (CV) shadow reduction …")
+        print(f"[3/4] U-Net mask → CV removal (method={cv_method}) …")
     mask = detector.predict_mask(rgb)
-    out_rgb = remove_shadows_lab(rgb, mask)
+    cv_kw = dict(cv_kwargs or {})
+    if verbose and cv_method in ("lab-pro", "illumination", "pro", "professional"):
+        cv_kw["verbose"] = True
+    out_rgb = apply_shadow_removal(rgb, mask, method=cv_method, **cv_kw)
 
     if save_mask_path is not None:
         mp = Path(save_mask_path)
