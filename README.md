@@ -1,56 +1,39 @@
-# Shadow detection & removal
+# Shadow Detection & Removal
 
-Dataset (2GB): [ISTD on Kaggle](https://www.kaggle.com/datasets/sabarinathan/istd-dataset/data) → `data/ISTD_Dataset`
+Dataset: [ISTD on Kaggle](https://www.kaggle.com/datasets/sabarinathan/istd-dataset/data) → `data/ISTD_Dataset`
 
-```
-train/train_A/  images with shadow
-train/train_B/  shadow masks
-train/train_C/  shadow-free ground truth
-```
+## Quick Start
 
-## Pipeline (default: `--removal-backend unet`)
-
-```
-Original image
-    → Detection U-Net  (shadow_detection.pth)  →  shadow mask
-    → Removal U-Net    (shadow_removal.pth)      →  uses [image + mask]
-    → Shadow-free output
-```
-
-Training uses **ground-truth** masks (`train_B`). At run time the mask comes from the **detector**.
-
-## 1) Train detection
+### Train
 
 ```bash
+# Detection model
 python main.py train-detection --data data/ISTD_Dataset --epochs 50 --batch-size 4
-```
 
-→ `models/shadow_detection.pth`
-
-## 2) Train removal (needs A + B + C)
-
-```bash
+# Removal model
 python main.py train-removal --data data/ISTD_Dataset --epochs 50 --batch-size 8
 ```
 
-→ `models/shadow_removal.pth` (4-channel input: RGB + mask)
-
-**Colab:** [COLAB_TRAINING.md](COLAB_TRAINING.md) · `colab/train_shadow_removal.ipynb`
-
-> If you trained removal before this update, **retrain on Colab** (architecture changed to 4-channel input).
-
-## 3) Run
+### Run
 
 ```bash
-python main.py run --image photo.jpg --output outputs/out.png \
-  --removal-backend unet \
+# Single image (e.g., 99-4.png from test directory)
+python main.py run --image data/ISTD_Dataset/test/test_A/99-4.png --output outputs/out.png \
   --detector-weights models/shadow_detection.pth \
-  --removal-weights models/shadow_removal.pth \
-  --save-mask outputs/mask.png -v
+  --removal-weights models/shadow_removal.pth -v
+
+# Batch of 20 random images with metrics (PSNR, SSIM)
+python main.py eval --input-dir data/ISTD_Dataset/test/test_A \
+  --gt-dir data/ISTD_Dataset/test/test_C \
+  --output-dir outputs/removed --num-images 20 \
+  --detector-weights models/shadow_detection.pth \
+  --removal-weights models/shadow_removal.pth -v
 ```
 
-**Legacy CV path** (no removal U-Net):
-
+## Test Detection Alone
+10 random images
 ```bash
-python main.py run --image photo.jpg --output outputs/out.png --removal-backend cv -v
+cd src
+python shadow_detector.py
 ```
+
