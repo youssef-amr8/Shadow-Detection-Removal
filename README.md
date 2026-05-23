@@ -31,9 +31,8 @@ python main.py eval --input-dir data/ISTD_Dataset/test/test_A \
 ```
 
 ## Test Detection Alone
-10 random images
+#10 random images with metrics
 ```bash
-cd src
-python shadow_detector.py
+python src/shadow_detection_test.py
 ```
 
