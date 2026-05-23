@@ -15,11 +15,19 @@ def conv_block(in_c, out_c):
 
 
 class UNet(nn.Module):
-    def __init__(self):
+    """
+    U-Net variants:
+      - Detection: in_channels=3, out_channels=1 (mask)
+      - Removal:   in_channels=4, out_channels=3 (RGB + mask → clean RGB)
+    """
+
+    def __init__(self, in_channels: int = 3, out_channels: int = 1):
         super(UNet, self).__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
 
         # Encoder
-        self.enc1 = conv_block(3, 64)
+        self.enc1 = conv_block(in_channels, 64)
         self.enc2 = conv_block(64, 128)
         self.enc3 = conv_block(128, 256)
         self.enc4 = conv_block(256, 512)
@@ -42,8 +50,7 @@ class UNet(nn.Module):
         self.up1 = nn.ConvTranspose2d(128, 64, 2, stride=2)
         self.dec1 = conv_block(128, 64)
 
-        # ✔ OUTPUT = 1 channel (MASK)
-        self.out = nn.Conv2d(64, 1, 1)
+        self.out = nn.Conv2d(64, out_channels, 1)
 
     def forward(self, x):
 

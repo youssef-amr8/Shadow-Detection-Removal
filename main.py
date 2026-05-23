@@ -24,9 +24,37 @@ def main() -> None:
     p_det.add_argument("--batch-size", type=int, default=4)
     p_det.add_argument("--device", choices=["cpu", "cuda"], default=None, help="Device to use for training (auto by default)")
 
+    p_rem = sub.add_parser(
+        "train-removal",
+        help="Train removal U-Net (train_A+train_B→train_C) → models/shadow_removal.pth",
+    )
+    p_rem.add_argument(
+        "--data",
+        default="data/ISTD_Dataset",
+        help="ISTD root with train_A, train_B, train_C",
+    )
+    p_rem.add_argument("--epochs", type=int, default=50)
+    p_rem.add_argument("--batch-size", type=int, default=8)
+    p_rem.add_argument("--img-size", type=int, default=256)
+    p_rem.add_argument("--lr", type=float, default=1e-4)
+    p_rem.add_argument("--num-workers", type=int, default=0, help="DataLoader workers (use 0 on Colab)")
+    p_rem.add_argument("--device", choices=["cpu", "cuda"], default=None)
+    p_rem.add_argument("--save", default=None, help="Output .pth path (default: models/shadow_removal.pth)")
+
     p_run = sub.add_parser(
         "run",
-        help="Load image → detector mask → CV (LAB) removal → save result (and optional mask PNG)",
+        help="Shadow removal on one image (U-Net or detector+CV)",
+    )
+    p_run.add_argument(
+        "--removal-backend",
+        choices=["cv", "unet"],
+        default="unet",
+        help="unet=detector+removal U-Net (default), cv=detector+OpenCV",
+    )
+    p_run.add_argument(
+        "--removal-weights",
+        default=None,
+        help="Removal U-Net .pth (default: models/shadow_removal.pth)",
     )
     p_run.add_argument("--image", required=True, help="Input image path")
     p_run.add_argument("--output", default="outputs/shadow_removed.png", help="Output image after CV removal")
@@ -94,17 +122,34 @@ def main() -> None:
             batch_size=args.batch_size,
             device=args.device,
         )
+    elif args.command == "train-removal":
+        from shadow_removal_train import train_shadow_removal
+
+        train_shadow_removal(
+            args.data,
+            epochs=args.epochs,
+            batch_size=args.batch_size,
+            img_size=args.img_size,
+            lr=args.lr,
+            device=args.device,
+            num_workers=args.num_workers,
+            save_path=args.save,
+        )
     elif args.command == "run":
         from pipeline import run_on_image
 
-        cv_kw = _lab_pro_kwargs(args) if args.cv_method == "lab-pro" else {}
-        if args.cv_method == "lab-pro" and args.retinex:
-            cv_kw["use_retinex"] = True
+        cv_kw = {}
+        if args.removal_backend == "cv":
+            cv_kw = _lab_pro_kwargs(args) if args.cv_method == "lab-pro" else {}
+            if args.cv_method == "lab-pro" and args.retinex:
+                cv_kw["use_retinex"] = True
 
         run_on_image(
             args.image,
             args.output,
+            removal_backend=args.removal_backend,
             detection_weights=args.detector_weights,
+            removal_weights=args.removal_weights,
             save_mask_path=args.save_mask,
             cv_method=args.cv_method,
             cv_kwargs=cv_kw or None,

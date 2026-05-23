@@ -14,6 +14,8 @@ ISTD_Dataset/
 # =========================
 shadow_detection.pth
 models/shadow_detection.pth
+shadow_removal.pth
+models/shadow_removal.pth
 *.h5
 *.keras
 *.pth
@@ -130,3 +132,6 @@ htmlcov/
 .pytest_cache/
 
 myReadme.md
+colab/
+COLAB_TRAINING.md
+colab/train_shadow_removal.ipynb
