@@ -2,9 +2,8 @@
 
 Dataset: [ISTD on Kaggle](https://www.kaggle.com/datasets/sabarinathan/istd-dataset/data) → `data/ISTD_Dataset`
 
-## Quick Start
 
-# Train
+## Train
 ### Detection model
 ```bash
 python main.py train-detection --data data/ISTD_Dataset --epochs 50 --batch-size 4
@@ -14,7 +13,7 @@ python main.py train-detection --data data/ISTD_Dataset --epochs 50 --batch-size
 python main.py train-removal --data data/ISTD_Dataset --epochs 50 --batch-size 8
 ```
 
-# Run 
+## Run 
 ### Single Image
 Single image (e.g., 99-4.png from test directory)
 result saved in output --> out.png
