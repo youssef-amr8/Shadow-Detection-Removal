@@ -26,6 +26,7 @@ python main.py run --image data/ISTD_Dataset/test/test_A/99-4.png --output outpu
 
 ### Batch of 20 random images with metrics (PSNR, SSIM)
 results saved in outputs/removed
+
 json file with results in also generated with the result images inside outputs/removed
 ```bash
 python main.py eval --input-dir data/ISTD_Dataset/test/test_A \
