@@ -172,3 +172,5 @@ myReadme.md
 colab/
 colab/train_shadow_removal.ipynb
 COLAB_TRAINING.md
+
+.vscode/settings.json
