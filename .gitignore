@@ -23,7 +23,6 @@ shadow_removal.pth
 *.pt
 *.pkl
 *.joblib
-models/
 checkpoints/
 *.ckpt
 
