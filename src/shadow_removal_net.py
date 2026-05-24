@@ -1,5 +1,3 @@
-"""Removal U-Net: (original RGB + shadow mask) → shadow-free RGB."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -60,14 +58,7 @@ class ShadowRemovalNet:
 
     @torch.inference_mode()
     def predict(self, image_rgb: np.ndarray, mask: np.ndarray) -> np.ndarray:
-        """
-        Args:
-            image_rgb: (H, W, 3) RGB float [0,1] or uint8.
-            mask: (H, W) or (H, W, 1) float [0,1], shadow=high.
 
-        Returns:
-            float32 RGB (H, W, 3) in [0, 1], same size as input.
-        """
         if image_rgb.dtype != np.float32:
             image_rgb = image_rgb.astype(np.float32)
         if image_rgb.max() > 1.0:

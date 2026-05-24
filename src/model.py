@@ -15,12 +15,6 @@ def conv_block(in_c, out_c):
 
 
 class UNet(nn.Module):
-    """
-    U-Net variants:
-      - Detection: in_channels=3, out_channels=1 (mask)
-      - Removal:   in_channels=4, out_channels=3 (RGB + mask → clean RGB)
-    """
-
     def __init__(self, in_channels: int = 3, out_channels: int = 1):
         super(UNet, self).__init__()
         self.in_channels = in_channels

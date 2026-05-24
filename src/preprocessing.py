@@ -37,12 +37,6 @@ class ShadowDataset(Dataset):
 
 
 class ShadowRemovalDataset(Dataset):
-    """
-    ISTD guided removal: concat(train_A RGB, train_B mask) → train_C clean RGB.
-
-    At train time uses ground-truth masks (train_B).
-    At inference the mask comes from the detection U-Net.
-    """
 
     def __init__(self, base_path, img_size=256):
         self.A_path = os.path.join(base_path, "train", "train_A")

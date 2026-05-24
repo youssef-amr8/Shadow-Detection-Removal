@@ -1,15 +1,9 @@
-"""Train U-Net shadow removal (ISTD train_A → train_C)."""
-
 from __future__ import annotations
-
-import os
 from pathlib import Path
-
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-
 from model import UNet
 from preprocessing import ShadowRemovalDataset
 from utils import repo_root
@@ -26,11 +20,7 @@ def train_shadow_removal(
     num_workers: int = 0,
     save_path: str | Path | None = None,
 ) -> Path:
-    """
-    Train U-Net: (RGB + mask) → shadow-free RGB.
 
-    Uses train_A, train_B (mask), train_C. Saves ``models/shadow_removal.pth``.
-    """
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     else:

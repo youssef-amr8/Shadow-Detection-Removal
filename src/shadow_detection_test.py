@@ -2,7 +2,6 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import sys
 import os
 import random
 from model import UNet
@@ -90,7 +89,6 @@ def test_on_test_set(model_path='models/shadow_detection.pth',
         accuracy_scores.append(accuracy)
         
         print(f"   IoU: {iou:.4f} | Accuracy: {accuracy:.4f}")
-        print(f"   Shadow: GT={gt_binary.mean()*100:.1f}% | Pred={pred_binary.mean()*100:.1f}%")
         
         # Save visualization - ONLY 3 COLUMNS
         fig, axes = plt.subplots(1, 3, figsize=(15, 5))

@@ -1,5 +1,3 @@
-"""Load trained shadow-detection U-Net and predict shadow masks."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -61,7 +59,6 @@ def resolve_detection_weights_path(weights_path: str | Path | None) -> Path:
 
 
 class ShadowDetector:
-    """Runs the detection U-Net (1-channel sigmoid mask)."""
 
     def __init__(
         self,
@@ -82,13 +79,7 @@ class ShadowDetector:
 
     @torch.inference_mode()
     def predict_mask(self, image_rgb: np.ndarray) -> np.ndarray:
-        """
-        Args:
-            image_rgb: float32 or uint8, shape (H, W, 3), RGB.
-
-        Returns:
-            float32 mask (H, W, 1) in [0, 1], same spatial size as input.
-        """
+ 
         if image_rgb.dtype != np.float32:
             image_rgb = image_rgb.astype(np.float32)
         if image_rgb.max() > 1.0:

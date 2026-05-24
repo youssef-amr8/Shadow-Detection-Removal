@@ -1,19 +1,20 @@
-"""Shadow detection training + learned removal CLI."""
-
 from __future__ import annotations
-
 import argparse
 import json
 import sys
 from pathlib import Path
-
 import cv2
 import numpy as np
+import torch
+
 
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
+from shadow_detector import ShadowDetector
+from shadow_removal_net import ShadowRemovalNet
+from metrics import MetricsComputer
 
 
 def run_learned_removal(
@@ -26,9 +27,6 @@ def run_learned_removal(
     save_mask_path: str | Path | None = None,
     verbose: bool = False,
 ) -> None:
-    from shadow_detector import ShadowDetector
-    from shadow_removal_net import ShadowRemovalNet
-
     detector = ShadowDetector(detector_weights, device=device)
     remover = ShadowRemovalNet(removal_weights, device=device)
 
@@ -69,12 +67,6 @@ def run_inference_batch(
     gt_dir: str | Path | None = None,
     verbose: bool = False,
 ) -> None:
-    """Run shadow detection and removal on random images and compute metrics."""
-    import torch
-
-    from shadow_detector import ShadowDetector
-    from shadow_removal_net import ShadowRemovalNet
-    from metrics import MetricsComputer
 
     if seed is not None:
         np.random.seed(seed)
