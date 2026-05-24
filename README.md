@@ -4,17 +4,18 @@ Dataset: [ISTD on Kaggle](https://www.kaggle.com/datasets/sabarinathan/istd-data
 
 ## Quick Start
 
-### Train
-
+# Train
+### Detection model
 ```bash
-# Detection model
 python main.py train-detection --data data/ISTD_Dataset --epochs 50 --batch-size 4
-
-# Removal model
+```
+### Removal model
+```bash
 python main.py train-removal --data data/ISTD_Dataset --epochs 50 --batch-size 8
 ```
 
-### Run Single Image
+# Run 
+### Single Image
 Single image (e.g., 99-4.png from test directory)
 result saved in output --> out.png
 ```bash
@@ -23,7 +24,7 @@ python main.py run --image data/ISTD_Dataset/test/test_A/99-4.png --output outpu
   --removal-weights models/shadow_removal.pth -v
 ```
 
-# Run Batch of 20 random images with metrics (PSNR, SSIM)
+### Batch of 20 random images with metrics (PSNR, SSIM)
 results saved in outputs/removed
 json file with results in also generated with the result images inside outputs/removed
 ```bash
