@@ -1,7 +1,8 @@
 # =========================
 # Dataset 
 # =========================
-data/
+data/*
+!data/.gitkeep
 ISTD_Dataset/
 *.jpg
 *.png
@@ -13,9 +14,9 @@ ISTD_Dataset/
 # TRAINED MODELS (PyTorch)
 # =========================
 shadow_detection.pth
-models/shadow_detection.pth
+models/*
+!models/.gitkeep
 shadow_removal.pth
-models/shadow_removal.pth
 *.h5
 *.keras
 *.pth
@@ -29,7 +30,8 @@ checkpoints/
 # =========================
 # OUTPUTS / RESULTS
 # =========================
-outputs/
+outputs/*
+!outputs/.gitkeep
 results/
 predictions/
 *.log
